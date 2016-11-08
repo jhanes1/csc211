@@ -1,13 +1,14 @@
 
 import sqlalchemy
 from sqlalchemy import create_engine
-engine = create_engine('bible.sqlite')
+engine = create_engine('sqlite:///bible.sqlite')
 
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 from sqlalchemy import Column, Integer, String
 class Verse(Base):
+    __tablename__ = 'verses'
     id = Column(Integer, primary_key=True)
     book = Column(String)
     chapter = Column(Integer)
@@ -23,9 +24,11 @@ memoize = lru_cache(1)
 @memoize
 def read_bible():
     cols = ['book','chapter','verse','text']
-    with gzip.open('/home/jhanes/csc211/hw/hw2/bible.tsv.gz','rt') as rfp:
+    with open('bible.tsv','rt') as rfp:
         reader = csv.DictReader(rfp,cols,delimiter='\t')
         verses = list(reader)
     return verses
 
 print(read_bible())
+
+for item in read_bible())
