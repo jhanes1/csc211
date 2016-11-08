@@ -60,3 +60,29 @@ session.rollback()
 ed_user.name
 fake_user in session
 session.query(User).filter(User.name.in_(['ed','fakeuser'])).all()
+for instance in session.query(User).order_by(User.id):
+    print(instance.name,instance.fullname)
+
+for name, fullname in session.query(User.name,User.fullname):
+    print(name,fullname)
+
+for row in session.query(User,User.name).all():
+    print(row.User, row.name)
+
+for row in session.query(User.name.label('name_label')).all():
+    print(row.name_label)
+
+from sqlalchemy.orm import aliased
+user_alias = aliased(User, name='user_alias')
+
+for row in session.query(user_alias, user_alias.name).all():
+    print(row.user_alias)
+
+for u in session.query(User).order_by(User.id)[1:3]:
+    print(u)
+
+for name, in session.query(User.name).filter_by(fullname='Ed Jones'):
+    print(name)
+
+for name, in session.query(User.name).filter_by(fullname='Ed Jones'):
+    print(name)
