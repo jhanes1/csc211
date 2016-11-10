@@ -17,6 +17,11 @@ class Verse(Base):
     def __repr__(self):
         return "<Verse(book='{}',chapter='{}',verse='{}',text='{}')>".\
         format(self.book,self.chapter,self.verse,self.text)
+Base.metadata.create_all(engine)
+
+from sqlalchemy.orm import sessionmaker
+Session = sessionmaker(bind=engine)
+session = Session()
 
 from functools import lru_cache
 import gzip, csv
@@ -29,6 +34,22 @@ def read_bible():
         verses = list(reader)
     return verses
 
-print(read_bible())
+bibHolder = read_bible()
+#{'chapter': '0',
+#'text': 'And the earth was without form, and void; and darkness [was] upon the face of the deep. And the Spirit of God moved upon the face of the waters. @',
+#'book': 'genesis',
+#'verse': '1'}
+index = 0
+for item in bibHolder:
+    iHold = index
+    cHold = int(item['chapter'])
+    tHold = item['text']
+    bHold = item['book']
+    vHold = int(item['verse'])
 
-for item in read_bible())
+    tempH = Verse(id = iHold, book = bHold, chapter = cHold, verse = vHold, text = tHold)
+    session.add(tempH)
+
+    index += 1
+
+session.commit()
