@@ -25,4 +25,7 @@ def login():
         flash('Login requested for OpenID="{}", remember_me={}'.\
             format(form.openid.data, str(form.remember_me.data)))
         return redirect('/idex')
-    return render_template('login.html',title='Sign In',form=form)
+    return render_template('login.html',
+        title='Sign In',
+        form=form,
+        providers=app.config['OPENID_PROVIDERS'])
